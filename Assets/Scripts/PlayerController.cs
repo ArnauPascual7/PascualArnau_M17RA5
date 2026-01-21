@@ -12,8 +12,6 @@ public class PlayerController : MonoBehaviour
     
     private PlayerInputs _playerInputs;
 
-    private Vector3 _groundedSpherePosition;
-    private float _groundedSphereRadius;
     private bool _isGrounded;
 
     private void Awake()
@@ -28,15 +26,15 @@ public class PlayerController : MonoBehaviour
 
     private void GroundCheck()
     {
-        _groundedSpherePosition = new Vector3(transform.position.x, transform.position.y - _characterController.radius, transform.position.z);
-        _groundedSphereRadius = _characterController.radius + _characterController.skinWidth;
+        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - _characterController.radius, transform.position.z);
+        float sphereRadius = _characterController.radius + _characterController.skinWidth;
 
-        _isGrounded = Physics.CheckSphere(_groundedSpherePosition, _groundedSphereRadius, _groundLayers, QueryTriggerInteraction.Ignore);
+        _isGrounded = Physics.CheckSphere(spherePosition, sphereRadius, _groundLayers, QueryTriggerInteraction.Ignore);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(_groundedSpherePosition, _groundedSphereRadius);
+        Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - _characterController.radius, transform.position.z), _characterController.radius + _characterController.skinWidth);
     }
 }
