@@ -1,0 +1,57 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
+{
+    public InputSystem_Actions InputActions { get; private set; }
+
+    public Vector2 Move { get; private set; }
+    public Vector2 Look { get; private set; }
+
+    public bool Sprint { get; private set; }
+
+    private void OnEnable()
+    {
+        InputActions = new InputSystem_Actions();
+        InputActions.Enable();
+
+        InputActions.Player.Enable();
+        InputActions.Player.SetCallbacks(this);
+    }
+
+    private void OnDisable()
+    {
+        InputActions.Player.Disable();
+        InputActions.Player.RemoveCallbacks(this);
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        Debug.LogWarning("(OnAttack) Not implemented!");
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        Debug.LogWarning("(OnInteract) Not implemented!");
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        Debug.LogWarning("(OnJump) Not implemented!");
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        Look = context.ReadValue<Vector2>();
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        Move = context.ReadValue<Vector2>();
+    }
+
+    public void OnSprint(InputAction.CallbackContext context)
+    {
+        Sprint = context.ReadValueAsButton();
+    }
+}
