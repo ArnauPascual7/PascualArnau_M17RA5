@@ -940,7 +940,7 @@ MonoBehaviour:
   CameraSide: 1
   CameraDistance: 3
   AvoidObstacles:
-    Enabled: 0
+    Enabled: 1
     CollisionFilter:
       serializedVersion: 2
       m_Bits: 1
@@ -1037,6 +1037,8 @@ MonoBehaviour:
     m_Bits: 1
   _lookSense: 0.1
   _lookLimitV: 70
+  _aimCameraDistance: 2
+  _aimSpeed: 10
 --- !u!114 &1656682899
 MonoBehaviour:
   m_ObjectHideFlags: 0

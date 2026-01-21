@@ -1,6 +1,7 @@
 using Unity.Android.Gradle.Manifest;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerInputs))]
 public class PlayerController : MonoBehaviour
@@ -22,18 +23,34 @@ public class PlayerController : MonoBehaviour
     [Header("Look Settings")]
     [SerializeField] private float _lookSense = 0.1f;
     [SerializeField] private float _lookLimitV = 70f;
+    [SerializeField] private float _aimCameraDistance = 2f;
+    [SerializeField] private float _aimSpeed = 10f;
 
     private PlayerInputs _playerInputs;
+    private CinemachineThirdPersonFollow _thirdPersonFollow;
 
     private Vector2 _cameraRotation = Vector2.zero;
     private Vector2 _playerTargetRotation = Vector2.zero;
 
+    private float _normalCameraDistance;
     private float _verticalVelocity;
     private bool _isGrounded;
 
     private void Awake()
     {
         _playerInputs = GetComponent<PlayerInputs>();
+        _thirdPersonFollow = _playerCamera.GetComponent<CinemachineThirdPersonFollow>();
+
+        if (_thirdPersonFollow != null)
+        {
+            _normalCameraDistance = _thirdPersonFollow.CameraDistance;
+        }
+    }
+
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Update()
@@ -42,6 +59,7 @@ public class PlayerController : MonoBehaviour
         Gravity();
         Jump();
         Movement();
+        Aim();
     }
 
     private void LateUpdate()
@@ -87,6 +105,16 @@ public class PlayerController : MonoBehaviour
         velocity.y = _verticalVelocity;
 
         _characterController.Move(velocity * Time.deltaTime);
+    }
+
+    private void Aim()
+    {
+        if (_thirdPersonFollow != null)
+        {
+            float cameraDistance = _playerInputs.Aim ? _aimCameraDistance : _normalCameraDistance;
+
+            _thirdPersonFollow.CameraDistance = Mathf.Lerp(_thirdPersonFollow.CameraDistance, cameraDistance, _aimSpeed * Time.deltaTime);
+        }
     }
 
     private void Rotation()

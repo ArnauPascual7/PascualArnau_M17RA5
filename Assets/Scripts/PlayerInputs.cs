@@ -10,6 +10,7 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public bool Sprint { get; private set; }
     public bool Jump { get; private set; }
+    public bool Aim { get; private set; }
 
     private void OnEnable()
     {
@@ -62,5 +63,10 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public void OnSprint(InputAction.CallbackContext context)
     {
         Sprint = context.ReadValueAsButton();
+    }
+
+    public void OnAim(InputAction.CallbackContext context)
+    {
+        Aim = context.ReadValueAsButton();
     }
 }
