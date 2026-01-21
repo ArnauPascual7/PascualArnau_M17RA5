@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private CinemachineCamera _playerCamera;
+    [SerializeField] private Transform _cameraTarget;
 
     [Header("Movement Settings")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -17,8 +18,15 @@ public class PlayerController : MonoBehaviour
     [Header("Ground Settings")]
     [SerializeField] private float _gravity = 9.8f;
     [SerializeField] private LayerMask _groundLayers;
-    
+
+    [Header("Look Settings")]
+    [SerializeField] private float _lookSense = 0.1f;
+    [SerializeField] private float _lookLimitV = 70f;
+
     private PlayerInputs _playerInputs;
+
+    private Vector2 _cameraRotation = Vector2.zero;
+    private Vector2 _playerTargetRotation = Vector2.zero;
 
     private float _verticalVelocity;
     private bool _isGrounded;
@@ -34,6 +42,11 @@ public class PlayerController : MonoBehaviour
         Gravity();
         Jump();
         Movement();
+    }
+
+    private void LateUpdate()
+    {
+        Rotation();
     }
 
     private void GroundCheck()
@@ -74,6 +87,20 @@ public class PlayerController : MonoBehaviour
         velocity.y = _verticalVelocity;
 
         _characterController.Move(velocity * Time.deltaTime);
+    }
+
+    private void Rotation()
+    {
+        _cameraRotation.x += _playerInputs.Look.x * _lookSense;
+        _cameraRotation.y -= _playerInputs.Look.y * _lookSense;
+        _cameraRotation.y = Mathf.Clamp(_cameraRotation.y, -_lookLimitV, _lookLimitV);
+
+        _playerTargetRotation.x += transform.eulerAngles.x + _lookSense * _playerInputs.Look.x;
+
+        _cameraTarget.rotation = Quaternion.Euler(_cameraRotation.y, _cameraRotation.x, 0f);
+
+        Quaternion targetRotationX = Quaternion.Euler(0f, _playerTargetRotation.x, 0f);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotationX, 10f * Time.deltaTime);
     }
 
     private void OnDrawGizmos()
