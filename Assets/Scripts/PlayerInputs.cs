@@ -9,6 +9,7 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public Vector2 Look { get; private set; }
 
     public bool Sprint { get; private set; }
+    public bool Jump { get; private set; }
 
     private void OnEnable()
     {
@@ -25,6 +26,11 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
         InputActions.Player.RemoveCallbacks(this);
     }
 
+    private void LateUpdate()
+    {
+        Jump = false;
+    }
+
     public void OnAttack(InputAction.CallbackContext context)
     {
         Debug.LogWarning("(OnAttack) Not implemented!");
@@ -37,7 +43,10 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        Debug.LogWarning("(OnJump) Not implemented!");
+        if (context.performed)
+        {
+            Jump = true;
+        }
     }
 
     public void OnLook(InputAction.CallbackContext context)
