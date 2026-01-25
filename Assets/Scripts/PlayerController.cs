@@ -6,6 +6,9 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInputs))]
 public class PlayerController : MonoBehaviour
 {
+    public Animator animator;
+    private Vector3 _currentBlendInput = Vector3.zero;
+
     [Header("References")]
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private CinemachineCamera _playerCamera;
@@ -14,6 +17,7 @@ public class PlayerController : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _sprintSpeed = 8f;
+    [SerializeField] private float _aimSpeed = 3f;
     [SerializeField] private float _jumpHeight = 8f;
 
     [Header("Ground Settings")]
@@ -23,8 +27,9 @@ public class PlayerController : MonoBehaviour
     [Header("Look Settings")]
     [SerializeField] private float _lookSense = 0.1f;
     [SerializeField] private float _lookLimitV = 70f;
+    [SerializeField] private float _aimLookSenseMultiplier = 0.5f;
     [SerializeField] private float _aimCameraDistance = 2f;
-    [SerializeField] private float _aimSpeed = 10f;
+    [SerializeField] private float _aimTransitionSpeed = 10f;
 
     private PlayerInputs _playerInputs;
     private CinemachineThirdPersonFollow _thirdPersonFollow;
@@ -99,7 +104,33 @@ public class PlayerController : MonoBehaviour
         Vector3 cameraRight = new Vector3(_playerCamera.transform.right.x, 0f, _playerCamera.transform.right.z).normalized;
         Vector3 movementDirection = cameraForward * _playerInputs.Move.y + cameraRight * _playerInputs.Move.x;
 
-        float currentSpeed = _playerInputs.Sprint ? _sprintSpeed : _moveSpeed;
+        if (_playerInputs.Move != Vector2.zero)
+        {
+            if (_playerInputs.Sprint)
+            {
+                _currentBlendInput = Vector3.Lerp(_currentBlendInput, _playerInputs.Move * 1.5f, 4f * Time.deltaTime);
+            }
+            else
+            {
+                _currentBlendInput = Vector3.Lerp(_currentBlendInput, _playerInputs.Move * 1f, 4f * Time.deltaTime);
+            }
+        }
+        else
+        {
+            _currentBlendInput = Vector3.Lerp(_currentBlendInput, _playerInputs.Move * 0.5f, 4f * Time.deltaTime);
+        }
+
+        float currentSpeed = _moveSpeed;
+        if (_playerInputs.Aim)
+        {
+            currentSpeed = _aimSpeed;
+        }
+        else if (_playerInputs.Sprint)
+        {
+            currentSpeed = _sprintSpeed;
+        }
+
+        animator.SetFloat("Speed", _currentBlendInput.magnitude);
 
         Vector3 velocity = movementDirection.normalized * currentSpeed;
         velocity.y = _verticalVelocity;
@@ -113,22 +144,25 @@ public class PlayerController : MonoBehaviour
         {
             float cameraDistance = _playerInputs.Aim ? _aimCameraDistance : _normalCameraDistance;
 
-            _thirdPersonFollow.CameraDistance = Mathf.Lerp(_thirdPersonFollow.CameraDistance, cameraDistance, _aimSpeed * Time.deltaTime);
+            _thirdPersonFollow.CameraDistance = Mathf.Lerp(_thirdPersonFollow.CameraDistance, cameraDistance, _aimTransitionSpeed * Time.deltaTime);
         }
     }
 
     private void Rotation()
     {
-        _cameraRotation.x += _playerInputs.Look.x * _lookSense;
-        _cameraRotation.y -= _playerInputs.Look.y * _lookSense;
+        float lookSense = _lookSense * (_playerInputs.Aim ? _aimLookSenseMultiplier : 1f);
+
+        _cameraRotation.x += _playerInputs.Look.x * lookSense;
+        _cameraRotation.y -= _playerInputs.Look.y * lookSense;
         _cameraRotation.y = Mathf.Clamp(_cameraRotation.y, -_lookLimitV, _lookLimitV);
 
-        _playerTargetRotation.x += transform.eulerAngles.x + _lookSense * _playerInputs.Look.x;
+        _playerTargetRotation.x += transform.eulerAngles.x + lookSense * _playerInputs.Look.x;
 
         _cameraTarget.rotation = Quaternion.Euler(_cameraRotation.y, _cameraRotation.x, 0f);
 
         Quaternion targetRotationX = Quaternion.Euler(0f, _playerTargetRotation.x, 0f);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotationX, 10f * Time.deltaTime);
+        float rotationSpeed = _playerInputs.Aim ? 15f : 10f;
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotationX, rotationSpeed * Time.deltaTime);
     }
 
     private void OnDrawGizmos()
