@@ -69,10 +69,10 @@ public class PlayerController : MonoBehaviour
 
     private void GroundCheck()
     {
-        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - _characterController.radius, transform.position.z);
-        float sphereRadius = _characterController.radius + _characterController.skinWidth;
+        float spherePositionY = transform.position.y - _characterController.height / 2 + _characterController.radius - _characterController.skinWidth;
+        Vector3 spherePosition = new Vector3(transform.position.x, spherePositionY, transform.position.z);
 
-        _isGrounded = Physics.CheckSphere(spherePosition, sphereRadius, _groundLayers, QueryTriggerInteraction.Ignore);
+        _isGrounded = Physics.CheckSphere(spherePosition, _characterController.radius, _groundLayers, QueryTriggerInteraction.Ignore);
     }
 
     private void Gravity()
@@ -133,7 +133,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        float spherePositionY = transform.position.y - _characterController.height / 2 + _characterController.radius - _characterController.skinWidth;
+        Vector3 spherePosition = new Vector3(transform.position.x, spherePositionY, transform.position.z);
+
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - _characterController.radius, transform.position.z), _characterController.radius + _characterController.skinWidth);
+        Gizmos.DrawSphere(spherePosition, _characterController.radius);
     }
 }
