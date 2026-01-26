@@ -1,14 +1,9 @@
-using Unity.Android.Gradle.Manifest;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(PlayerInputs))]
+[RequireComponent(typeof(PlayerInputs), typeof(CharacterController), typeof(PlayerState))]
 public class PlayerController : MonoBehaviour
 {
-    public Animator animator;
-    private Vector3 _currentBlendInput = Vector3.zero;
-
     [Header("References")]
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private CinemachineCamera _playerCamera;
@@ -32,6 +27,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _aimTransitionSpeed = 10f;
 
     private PlayerInputs _playerInputs;
+    private PlayerState _playerState;
     private CinemachineThirdPersonFollow _thirdPersonFollow;
 
     private Vector2 _cameraRotation = Vector2.zero;
@@ -44,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _playerInputs = GetComponent<PlayerInputs>();
+        _playerState = GetComponent<PlayerState>();
         _thirdPersonFollow = _playerCamera.GetComponent<CinemachineThirdPersonFollow>();
 
         if (_thirdPersonFollow != null)
@@ -60,6 +57,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        UpdateMoveState();
+
         GroundCheck();
         Gravity();
         Jump();
@@ -70,6 +69,15 @@ public class PlayerController : MonoBehaviour
     private void LateUpdate()
     {
         Rotation();
+    }
+
+    private void UpdateMoveState()
+    {
+        PlayerMoveState state = 
+            _playerInputs.Sprint ? PlayerMoveState.Sprinting :
+            IsMovingLaterally() ? PlayerMoveState.Walking : PlayerMoveState.Idle;
+
+        _playerState.SetPlayerMoveState(state);
     }
 
     private void GroundCheck()
@@ -104,22 +112,6 @@ public class PlayerController : MonoBehaviour
         Vector3 cameraRight = new Vector3(_playerCamera.transform.right.x, 0f, _playerCamera.transform.right.z).normalized;
         Vector3 movementDirection = cameraForward * _playerInputs.Move.y + cameraRight * _playerInputs.Move.x;
 
-        if (_playerInputs.Move != Vector2.zero)
-        {
-            if (_playerInputs.Sprint)
-            {
-                _currentBlendInput = Vector3.Lerp(_currentBlendInput, _playerInputs.Move * 1.5f, 4f * Time.deltaTime);
-            }
-            else
-            {
-                _currentBlendInput = Vector3.Lerp(_currentBlendInput, _playerInputs.Move * 1f, 4f * Time.deltaTime);
-            }
-        }
-        else
-        {
-            _currentBlendInput = Vector3.Lerp(_currentBlendInput, _playerInputs.Move * 0.5f, 4f * Time.deltaTime);
-        }
-
         float currentSpeed = _moveSpeed;
         if (_playerInputs.Aim)
         {
@@ -129,8 +121,6 @@ public class PlayerController : MonoBehaviour
         {
             currentSpeed = _sprintSpeed;
         }
-
-        animator.SetFloat("Speed", _currentBlendInput.magnitude);
 
         Vector3 velocity = movementDirection.normalized * currentSpeed;
         velocity.y = _verticalVelocity;
@@ -163,6 +153,13 @@ public class PlayerController : MonoBehaviour
         Quaternion targetRotationX = Quaternion.Euler(0f, _playerTargetRotation.x, 0f);
         float rotationSpeed = _playerInputs.Aim ? 15f : 10f;
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotationX, rotationSpeed * Time.deltaTime);
+    }
+
+    private bool IsMovingLaterally()
+    {
+        Vector3 lateralVelocity = new Vector3(_characterController.velocity.x, 0f, _characterController.velocity.z);
+
+        return lateralVelocity.magnitude > 0.01f;
     }
 
     private void OnDrawGizmos()

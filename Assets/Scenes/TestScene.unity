@@ -991,6 +991,11 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!1 &1596535418 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4844536464641986921, guid: 7b9c764d754e275489665a5264ec992b, type: 3}
+  m_PrefabInstance: {fileID: 5935692740970882360}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1656682897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,6 +1011,7 @@ GameObject:
   - component: {fileID: 1656682901}
   - component: {fileID: 1656682899}
   - component: {fileID: 1656682898}
+  - component: {fileID: 1656682905}
   m_Layer: 10
   m_Name: Capsule
   m_TagString: Untagged
@@ -1025,7 +1031,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84eeb2fca4d62c840bfc8bb43d9d94a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  animator: {fileID: 0}
   _characterController: {fileID: 1656682901}
   _playerCamera: {fileID: 1212026119}
   _cameraTarget: {fileID: 521925840}
@@ -1177,11 +1182,38 @@ Transform:
   - {fileID: 521925840}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1656682905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656682897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67362c97508c16a4e8e16e63590df5ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerState
+  <CurrentPlayerMoveState>k__BackingField: 0
 --- !u!95 &1838499565 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 7018706864641495848, guid: 7b9c764d754e275489665a5264ec992b, type: 3}
   m_PrefabInstance: {fileID: 5935692740970882360}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1838499567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1596535418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc5983737b386744a3be15f49e0bc96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimation
+  _animationTransitionSpeed: 1
+  VelocityParam: Velocity
 --- !u!43 &2022211784
 Mesh:
   m_ObjectHideFlags: 0
@@ -1503,7 +1535,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4844536464641986921, guid: 7b9c764d754e275489665a5264ec992b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1838499567}
   m_SourcePrefab: {fileID: 100100000, guid: 7b9c764d754e275489665a5264ec992b, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
