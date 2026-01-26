@@ -3,9 +3,12 @@ using UnityEngine;
 [RequireComponent(typeof(Animator), typeof(PlayerInputs), typeof(PlayerState))]
 public class PlayerAnimation : MonoBehaviour
 {
-    [SerializeField] private float _animationTransitionSpeed = 1f;
+    [SerializeField] private float _animationTransitionSpeed = 10f;
 
     public string VelocityParam = "Velocity";
+    public string GroundedParam = "Grounded";
+    public string JumpingParam = "Jumping";
+    public string FallingParam = "Falling";
 
     private Animator _animator;
 
@@ -27,12 +30,23 @@ public class PlayerAnimation : MonoBehaviour
 
     private void Update()
     {
-        Vector2 inputTarget = 
-            _playerInputs.Sprint ? _playerInputs.Move * _sprintMaxBlendValue :
+        bool isIdle = _playerState.CurrentPlayerMoveState == PlayerMoveState.Idle;
+        bool isWalking = _playerState.CurrentPlayerMoveState == PlayerMoveState.Walking;
+        bool isSprinting = _playerState.CurrentPlayerMoveState == PlayerMoveState.Sprinting;
+        bool isJumping = _playerState.CurrentPlayerMoveState == PlayerMoveState.Jumping;
+        bool isFalling = _playerState.CurrentPlayerMoveState == PlayerMoveState.Falling;
+        bool isGrounded = _playerState.InGroundState();
+
+        Vector2 inputTarget =
+            isSprinting ? _playerInputs.Move * _sprintMaxBlendValue :
             _playerInputs.Move * _walkMaxBlendValue;
 
         _currentBlendInput = Vector3.Lerp(_currentBlendInput, inputTarget, _animationTransitionSpeed * Time.deltaTime);
 
         _animator.SetFloat(VelocityParam, _currentBlendInput.magnitude);
+
+        _animator.SetBool(GroundedParam, isGrounded);
+        _animator.SetBool(JumpingParam, isJumping);
+        _animator.SetBool(FallingParam, isFalling);
     }
 }

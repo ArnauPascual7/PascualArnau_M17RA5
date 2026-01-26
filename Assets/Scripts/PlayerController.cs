@@ -33,9 +33,14 @@ public class PlayerController : MonoBehaviour
     private Vector2 _cameraRotation = Vector2.zero;
     private Vector2 _playerTargetRotation = Vector2.zero;
 
+    private float _timeSinceLastGrounded = 0f;
+    private bool _jumpedLastFrame = false;
     private float _normalCameraDistance;
     private float _verticalVelocity;
     private bool _isGrounded;
+    private float _stepOffset;
+
+    private PlayerMoveState _lastMovementState = PlayerMoveState.Falling;
 
     private void Awake()
     {
@@ -47,6 +52,8 @@ public class PlayerController : MonoBehaviour
         {
             _normalCameraDistance = _thirdPersonFollow.CameraDistance;
         }
+
+        _stepOffset = _characterController.stepOffset;
     }
 
     private void Start()
@@ -71,21 +78,116 @@ public class PlayerController : MonoBehaviour
         Rotation();
     }
 
-    private void UpdateMoveState()
+    /*private void UpdateMoveState()
     {
-        PlayerMoveState state = 
-            _playerInputs.Sprint ? PlayerMoveState.Sprinting :
-            IsMovingLaterally() ? PlayerMoveState.Walking : PlayerMoveState.Idle;
+        _lastMovementState = _playerState.CurrentPlayerMoveState;
+
+        bool isMoving = _playerInputs.Move != Vector2.zero;
+        bool isMovingLaterlally = IsMovingLaterally();
+        bool isSprinting = _playerInputs.Sprint && isMovingLaterlally;
+
+        PlayerMoveState state;
+        if (isSprinting)
+        {
+            state = PlayerMoveState.Sprinting;
+        }
+        else if (isMovingLaterlally || isMoving)
+        {
+            state = PlayerMoveState.Walking;
+        }
+        else
+        {
+            state = PlayerMoveState.Idle;
+        }
 
         _playerState.SetPlayerMoveState(state);
+
+        if ((!_isGrounded || _jumpedLastFrame) && _characterController.velocity.y > 0)
+        {
+            _playerState.SetPlayerMoveState(PlayerMoveState.Jumping);
+            _jumpedLastFrame = false;
+            _characterController.stepOffset = 0f;
+        }
+        else
+        {
+            _characterController.stepOffset = _stepOffset;
+        }
+    }*/
+    private void UpdateMoveState()
+    {
+        _lastMovementState = _playerState.CurrentPlayerMoveState;
+
+        bool isMoving = _playerInputs.Move != Vector2.zero;
+        bool isMovingLaterlally = IsMovingLaterally();
+        bool isSprinting = _playerInputs.Sprint && isMovingLaterlally;
+
+        // Primer comprova si ha saltat (màxima prioritat)
+        if (_jumpedLastFrame)
+        {
+            _characterController.stepOffset = 0f;
+            _playerState.SetPlayerMoveState(PlayerMoveState.Jumping);
+            _jumpedLastFrame = false;
+            return; // Surt immediatament
+        }
+
+        // Comprova si està a l'aire (sense grounded i sense coyote time)
+        if (!_isGrounded && _timeSinceLastGrounded > 0.15f)
+        {
+            _characterController.stepOffset = 0f;
+
+            if (_verticalVelocity > 1f)
+            {
+                _playerState.SetPlayerMoveState(PlayerMoveState.Jumping);
+            }
+            else
+            {
+                _playerState.SetPlayerMoveState(PlayerMoveState.Falling);
+            }
+        }
+        // Si està dins del coyote time però està caient, també marca com Falling
+        else if (!_isGrounded && _verticalVelocity < -2f)
+        {
+            _characterController.stepOffset = 0f;
+            _playerState.SetPlayerMoveState(PlayerMoveState.Falling);
+        }
+        // Estats de terra
+        else if (_isGrounded)
+        {
+            _characterController.stepOffset = _stepOffset;
+
+            PlayerMoveState state;
+            if (isSprinting)
+            {
+                state = PlayerMoveState.Sprinting;
+            }
+            else if (isMovingLaterlally || isMoving)
+            {
+                state = PlayerMoveState.Walking;
+            }
+            else
+            {
+                state = PlayerMoveState.Idle;
+            }
+
+            _playerState.SetPlayerMoveState(state);
+        }
     }
 
     private void GroundCheck()
     {
-        float spherePositionY = transform.position.y - _characterController.height / 2 + _characterController.radius - _characterController.skinWidth;
+        float spherePositionY = transform.position.y + _characterController.radius - _characterController.skinWidth;
         Vector3 spherePosition = new Vector3(transform.position.x, spherePositionY, transform.position.z);
 
         _isGrounded = Physics.CheckSphere(spherePosition, _characterController.radius, _groundLayers, QueryTriggerInteraction.Ignore);
+
+        if (_isGrounded)
+        {
+            _timeSinceLastGrounded = 0f;
+        }
+        else
+        {
+            _timeSinceLastGrounded += Time.deltaTime;
+        }
     }
 
     private void Gravity()
@@ -103,6 +205,7 @@ public class PlayerController : MonoBehaviour
         if (_playerInputs.Jump && _isGrounded)
         {
             _verticalVelocity = Mathf.Sqrt((_jumpHeight / 10f) * 3f * _gravity);
+            _jumpedLastFrame = true;
         }
     }
 
@@ -164,7 +267,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        float spherePositionY = transform.position.y - _characterController.height / 2 + _characterController.radius - _characterController.skinWidth;
+        float spherePositionY = transform.position.y + _characterController.radius - _characterController.skinWidth;
         Vector3 spherePosition = new Vector3(transform.position.x, spherePositionY, transform.position.z);
 
         Gizmos.color = Color.red;
