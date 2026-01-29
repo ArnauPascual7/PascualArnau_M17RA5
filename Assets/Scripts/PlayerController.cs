@@ -1,9 +1,12 @@
+using System;
 using Unity.Cinemachine;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInputs), typeof(CharacterController), typeof(PlayerState))]
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance { get; private set; }
+
     [Header("References")]
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private CinemachineCamera _playerCamera;
@@ -39,11 +42,23 @@ public class PlayerController : MonoBehaviour
     private float _verticalVelocity;
     private bool _isGrounded;
     private float _stepOffset;
+    private bool _objCollected = false;
 
     private PlayerMoveState _lastMovementState = PlayerMoveState.Falling;
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         _playerInputs = GetComponent<PlayerInputs>();
         _playerState = GetComponent<PlayerState>();
         _thirdPersonFollow = _playerCamera.GetComponent<CinemachineThirdPersonFollow>();
@@ -273,4 +288,37 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(spherePosition, _characterController.radius);
     }
+
+    public void Save(ref PlayerSaveData data)
+    {
+        data.Position = transform.position;
+        data.Rotation = transform.rotation;
+        data.ObjCollected = _objCollected;
+    }
+
+    public void Load(PlayerSaveData data)
+    {
+        _characterController.enabled = false;
+
+        transform.SetPositionAndRotation(data.Position, data.Rotation);
+
+        _verticalVelocity = 0f;
+        _timeSinceLastGrounded = 0f;
+
+        _cameraRotation.x = data.Rotation.eulerAngles.y;
+        _cameraRotation.y = 0f;
+        _playerTargetRotation.x = data.Rotation.eulerAngles.y;
+
+        _characterController.enabled = true;
+
+        _objCollected = data.ObjCollected;
+    }
+}
+
+[Serializable]
+public struct PlayerSaveData
+{
+    public Vector3 Position;
+    public Quaternion Rotation;
+    public bool ObjCollected;
 }
