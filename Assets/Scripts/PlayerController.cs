@@ -42,7 +42,8 @@ public class PlayerController : MonoBehaviour
     private float _verticalVelocity;
     private bool _isGrounded;
     private float _stepOffset;
-    private bool _objCollected = false;
+
+    public bool objCollected = false;
 
     private PlayerMoveState _lastMovementState = PlayerMoveState.Falling;
 
@@ -293,7 +294,7 @@ public class PlayerController : MonoBehaviour
     {
         data.Position = transform.position;
         data.Rotation = transform.rotation;
-        data.ObjCollected = _objCollected;
+        data.ObjCollected = objCollected;
     }
 
     public void Load(PlayerSaveData data)
@@ -311,7 +312,7 @@ public class PlayerController : MonoBehaviour
 
         _characterController.enabled = true;
 
-        _objCollected = data.ObjCollected;
+        objCollected = data.ObjCollected;
     }
 }
 

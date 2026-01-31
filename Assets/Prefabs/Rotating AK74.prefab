@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5415588228375917296}
   - component: {fileID: 4215387526936333048}
   - component: {fileID: 3369265267067325042}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Mag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,8 @@ GameObject:
   - component: {fileID: 8891985279643992055}
   - component: {fileID: 7641745534561049695}
   - component: {fileID: 4446448236170130522}
-  m_Layer: 0
+  - component: {fileID: 3258312351837481504}
+  m_Layer: 11
   m_Name: Rotating AK74
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,6 +201,28 @@ MonoBehaviour:
   _rotationSpeed: 10
   _jumpPower: 2
   _jumpDuration: 4
+--- !u!64 &3258312351837481504
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3923165977225444256}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 6f966b9a7c817ed49973b4a8762cbbdf, type: 3}
 --- !u!1 &4642136564284981354
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,7 +234,7 @@ GameObject:
   - component: {fileID: 3101026595903265181}
   - component: {fileID: 7954348927567185858}
   - component: {fileID: 4915326579828916433}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -301,7 +324,7 @@ GameObject:
   - component: {fileID: 6661961403074499839}
   - component: {fileID: 1234481301699534779}
   - component: {fileID: 8175577405134993192}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}

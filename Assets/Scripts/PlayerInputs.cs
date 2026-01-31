@@ -11,6 +11,7 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public bool Sprint { get; private set; }
     public bool Jump { get; private set; }
     public bool Aim { get; private set; }
+    public bool Interact { get; private set; }
 
     private void OnEnable()
     {
@@ -39,7 +40,7 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        Debug.LogWarning("(OnInteract) Not implemented!");
+        Interact = context.ReadValueAsButton();
     }
 
     public void OnJump(InputAction.CallbackContext context)
