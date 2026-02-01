@@ -15,6 +15,11 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     private void OnEnable()
     {
+        EnableInputs();
+    }
+
+    private void EnableInputs()
+    {
         InputActions = new InputSystem_Actions();
         InputActions.Enable();
 
@@ -23,6 +28,11 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
     }
 
     private void OnDisable()
+    {
+        DisableInputs();
+    }
+
+    private void DisableInputs()
     {
         InputActions.Player.Disable();
         InputActions.Player.RemoveCallbacks(this);
