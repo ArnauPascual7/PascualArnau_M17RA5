@@ -31,6 +31,12 @@ public class SaveNpc : MonoBehaviour, IInteractable
         SaveSystem.Load();
     }
 
+    public void EquipDesequipObj()
+    {
+        PlayerController.Instance.objCollected = !PlayerController.Instance.objCollected;
+        PlayerController.Instance.EquipPartyHat(PlayerController.Instance.objCollected);
+    }
+
     public void ExitInteraction()
     {
         OnExitInteract.Invoke();

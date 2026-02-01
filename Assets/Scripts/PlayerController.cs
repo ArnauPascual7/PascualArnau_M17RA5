@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private CinemachineCamera _playerCamera;
     [SerializeField] private Transform _cameraTarget;
+    [SerializeField] private GameObject _partyHat;
 
     [Header("Movement Settings")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -326,6 +327,12 @@ public class PlayerController : MonoBehaviour
         _characterController.enabled = true;
 
         objCollected = data.ObjCollected;
+        EquipPartyHat(objCollected);
+    }
+
+    public void EquipPartyHat(bool equip)
+    {
+        _partyHat.SetActive(equip);
     }
 }
 
