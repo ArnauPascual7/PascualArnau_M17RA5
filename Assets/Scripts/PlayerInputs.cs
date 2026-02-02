@@ -12,6 +12,7 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public bool Jump { get; private set; }
     public bool Aim { get; private set; }
     public bool Interact { get; private set; }
+    public bool Dance { get; private set; }
 
     private void OnEnable()
     {
@@ -79,5 +80,10 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public void OnAim(InputAction.CallbackContext context)
     {
         Aim = context.ReadValueAsButton();
+    }
+
+    public void OnDance(InputAction.CallbackContext context)
+    {
+        Dance = !Dance;
     }
 }

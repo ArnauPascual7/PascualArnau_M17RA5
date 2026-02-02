@@ -9,6 +9,7 @@ public class PlayerAnimation : MonoBehaviour
     public string GroundedParam = "Grounded";
     public string JumpingParam = "Jumping";
     public string FallingParam = "Falling";
+    public string DancingParam = "Dancing";
 
     private Animator _animator;
 
@@ -36,6 +37,7 @@ public class PlayerAnimation : MonoBehaviour
         bool isJumping = _playerState.CurrentPlayerMoveState == PlayerMoveState.Jumping;
         bool isFalling = _playerState.CurrentPlayerMoveState == PlayerMoveState.Falling;
         bool isGrounded = _playerState.InGroundState();
+        bool isDancing = _playerState.CurrentPlayerMoveState == PlayerMoveState.Dancing;
 
         Vector2 inputTarget =
             isSprinting ? _playerInputs.Move * _sprintMaxBlendValue :
@@ -48,5 +50,6 @@ public class PlayerAnimation : MonoBehaviour
         _animator.SetBool(GroundedParam, isGrounded);
         _animator.SetBool(JumpingParam, isJumping);
         _animator.SetBool(FallingParam, isFalling);
+        _animator.SetBool(DancingParam, isDancing);
     }
 }

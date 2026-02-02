@@ -19,7 +19,8 @@ public class PlayerState : MonoBehaviour
         return
             state == PlayerMoveState.Idle ||
             state == PlayerMoveState.Walking ||
-            state == PlayerMoveState.Sprinting;
+            state == PlayerMoveState.Sprinting ||
+            state == PlayerMoveState.Dancing;
     }
 }
 
@@ -29,5 +30,6 @@ public enum PlayerMoveState
     Walking = 1,
     Sprinting = 2,
     Jumping = 3,
-    Falling = 4
+    Falling = 4,
+    Dancing = 5
 }

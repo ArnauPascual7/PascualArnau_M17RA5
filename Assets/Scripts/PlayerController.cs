@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private CinemachineCamera _playerCamera;
     [SerializeField] private Transform _cameraTarget;
+    [SerializeField] private CinemachineCamera _danceCamera;
     [SerializeField] private GameObject _partyHat;
 
     [Header("Movement Settings")]
@@ -99,9 +100,19 @@ public class PlayerController : MonoBehaviour
 
         GroundCheck();
         Gravity();
-        Jump();
-        Movement();
-        Aim();
+        
+        if (_playerState.CurrentPlayerMoveState == PlayerMoveState.Dancing)
+        {
+            _danceCamera.Priority = 1;
+        }
+        else
+        {
+            _danceCamera.Priority = -1;
+
+            Jump();
+            Movement();
+            Aim();
+        }
     }
 
     private void LateUpdate()
@@ -198,6 +209,11 @@ public class PlayerController : MonoBehaviour
             else
             {
                 state = PlayerMoveState.Idle;
+            }
+
+            if (_playerInputs.Dance)
+            {
+                state = PlayerMoveState.Dancing;
             }
 
             _playerState.SetPlayerMoveState(state);
