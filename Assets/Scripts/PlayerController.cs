@@ -227,6 +227,18 @@ public class PlayerController : MonoBehaviour
 
         _isGrounded = Physics.CheckSphere(spherePosition, _characterController.radius, _groundLayers, QueryTriggerInteraction.Ignore);
 
+        /*if (Physics.SphereCast(transform.position, _characterController.radius, Vector3.down, out RaycastHit hitInfo, _groundLayers))
+        {
+            float distanceToGround = hitInfo.distance - _characterController.height / 2f;
+            _isGrounded = distanceToGround <= 0.05f;
+            Debug.Log("Distance to Ground: " + distanceToGround);
+        }
+        else
+        {
+            _isGrounded = false;
+        }*/
+        Debug.Log("Is Grounded: " + _isGrounded);
+
         if (_isGrounded)
         {
             _timeSinceLastGrounded = 0f;
