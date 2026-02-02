@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            Instance.transform.position = transform.position;
             Destroy(gameObject);
             return;
         }
