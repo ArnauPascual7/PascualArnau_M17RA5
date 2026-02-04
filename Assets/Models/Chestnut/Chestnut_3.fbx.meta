@@ -1,18 +1,31 @@
 fileFormatVersion: 2
-guid: 7028a30082926d24f9168b77ffa645c0
-AssetOrigin:
-  serializedVersion: 1
-  productId: 229716
-  packageName: Realistic Tree Pack 1
-  packageVersion: 1.0
-  assetPath: Assets/Realistic Tree/Source/Models/Chestnut/Chestnut_1.fbx
-  uploadId: 519026
+guid: bb740a22ee543524191faa72a3a6b1b8
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tree_0Mat.001
+    second: {fileID: 2100000, guid: b20a2009a98fcc04a82143a10c05ee98, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tree_1Mat.001
+    second: {fileID: 2100000, guid: 4287affec0cda8b48ab05710194392c3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tree_2Mat.001
+    second: {fileID: 2100000, guid: cf9ab3fd1b8f29d49aac2e4f0019c9ce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tree_3Mat.001
+    second: {fileID: 2100000, guid: 4bc9d8cdbaf1549438ced84c24c9c884, type: 2}
   materials:
-    materialImportMode: 0
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
