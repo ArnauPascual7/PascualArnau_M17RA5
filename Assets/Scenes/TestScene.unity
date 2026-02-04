@@ -1476,10 +1476,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SaveNpc
       objectReference: {fileID: 0}
-    - target: {fileID: 8052134620956536621, guid: 5e5a384ef03d8d140898982bd210028c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

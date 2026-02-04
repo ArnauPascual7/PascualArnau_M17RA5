@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class PartyHat : CollectibleObject
 {
+    [Header("Parent Object")]
+    [SerializeField] private GameObject _parent;
+
     public override bool Interact(PlayerInteraction player)
     {
         PlayerController controller = player.GetComponent<PlayerController>();
@@ -11,7 +14,7 @@ public class PartyHat : CollectibleObject
         controller.objCollected = true;
         controller.EquipPartyHat(true);
 
-        gameObject.SetActive(false);
+        _parent.SetActive(false);
 
         return true;
     }
