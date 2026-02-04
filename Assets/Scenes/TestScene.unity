@@ -1668,9 +1668,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1648441368924877262, guid: be666a6c892f69d49986145b065f5031, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1957568269313812035, guid: be666a6c892f69d49986145b065f5031, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462868049151859456, guid: be666a6c892f69d49986145b065f5031, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4313669175582887400, guid: be666a6c892f69d49986145b065f5031, type: 3}
       propertyPath: m_Name
       value: My Explosion VFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 4313669175582887400, guid: be666a6c892f69d49986145b065f5031, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4729218675182416004, guid: be666a6c892f69d49986145b065f5031, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5967524908146340870, guid: be666a6c892f69d49986145b065f5031, type: 3}
       propertyPath: m_LocalPosition.x
