@@ -94,15 +94,20 @@ public class GameManager : MonoBehaviour
 
     public void Load(PlayerSaveData data)
     {
+        SetPlayerPositionRotation(data.Position, data.Rotation);
+
+        _playerInventory.SetPartyHatState(data.PartyHat);
+    }
+
+    public void SetPlayerPositionRotation(Vector3 position, Quaternion rotation)
+    {
         CharacterController chController = Player.GetComponent<CharacterController>();
         chController.enabled = false;
 
-        Player.transform.SetPositionAndRotation(data.Position, data.Rotation);
-        _playerController.SetOnLoad(data.Rotation);
+        Player.transform.SetPositionAndRotation(position, rotation);
+        _playerController.SetOnLoad(rotation);
 
         chController.enabled = true;
-
-        _playerInventory.SetPartyHatState(data.PartyHat);
     }
 }
 
