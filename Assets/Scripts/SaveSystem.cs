@@ -27,7 +27,7 @@ public class SaveSystem
 
     private static void HandleSaveData()
     {
-        PlayerController.Instance.Save(ref _saveData.playerSaveData);
+        GameManager.Instance.Save(ref _saveData.playerSaveData);
     }
 
     public static void Load()
@@ -41,6 +41,6 @@ public class SaveSystem
 
     private static void HandleLoadData()
     {
-        PlayerController.Instance.Load(_saveData.playerSaveData);
+        GameManager.Instance.Load(_saveData.playerSaveData);
     }
 }

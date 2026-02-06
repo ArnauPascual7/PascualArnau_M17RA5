@@ -7,12 +7,11 @@ public class PartyHat : CollectibleObject
 
     public override bool Interact(PlayerInteraction player)
     {
-        PlayerController controller = player.GetComponent<PlayerController>();
+        PlayerInventory pInventory = player.GetComponent<PlayerInventory>();
 
-        if (controller == null) return false;
+        if (pInventory == null) return false;
 
-        controller.objCollected = true;
-        controller.EquipPartyHat(true);
+        pInventory.SetPartyHatState(true);
 
         _parent.SetActive(false);
 

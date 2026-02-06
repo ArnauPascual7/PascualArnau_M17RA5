@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        /*if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
             Instance.transform.position = transform.position;
             Destroy(gameObject);
             return;
-        }
+        }*/
 
         _playerInputs = GetComponent<PlayerInputs>();
         _playerState = GetComponent<PlayerState>();
@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        SetCursorState(false);
+        GameManager.Instance.SetCursorState(false);
     }
 
     public void SetCursorState(bool state)
@@ -333,42 +333,13 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawSphere(spherePosition, _characterController.radius);
     }
 
-    public void Save(ref PlayerSaveData data)
+    public void SetOnLoad(Quaternion rotation)
     {
-        data.Position = transform.position;
-        data.Rotation = transform.rotation;
-        data.ObjCollected = objCollected;
-    }
-
-    public void Load(PlayerSaveData data)
-    {
-        _characterController.enabled = false;
-
-        transform.SetPositionAndRotation(data.Position, data.Rotation);
-
         _verticalVelocity = 0f;
         _timeSinceLastGrounded = 0f;
 
-        _cameraRotation.x = data.Rotation.eulerAngles.y;
+        _cameraRotation.x = rotation.eulerAngles.y;
         _cameraRotation.y = 0f;
-        _playerTargetRotation.x = data.Rotation.eulerAngles.y;
-
-        _characterController.enabled = true;
-
-        objCollected = data.ObjCollected;
-        EquipPartyHat(objCollected);
+        _playerTargetRotation.x = rotation.eulerAngles.y;
     }
-
-    public void EquipPartyHat(bool equip)
-    {
-        _partyHat.SetActive(equip);
-    }
-}
-
-[Serializable]
-public struct PlayerSaveData
-{
-    public Vector3 Position;
-    public Quaternion Rotation;
-    public bool ObjCollected;
 }

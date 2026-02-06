@@ -34,7 +34,8 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (_playerInputs.Interact)
                 {
-                    interactable.Interact(this);
+                    bool success = interactable.Interact(this);
+                    if (!success) Debug.LogError("Error on interacting with object: " + interactable.ToString());
                 }
             }
             else

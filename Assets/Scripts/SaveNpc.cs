@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,7 +25,9 @@ public class SaveNpc : MonoBehaviour, IInteractable
     {
         _uiText.text = string.Empty;
 
-        OnInteract.Invoke();
+        GameManager.Instance.SetPlayerInputsState(false);
+        GameManager.Instance.SetCursorState(true);
+
         _interactionCanvas.SetActive(true);
 
         return true;
@@ -45,13 +48,15 @@ public class SaveNpc : MonoBehaviour, IInteractable
     public void EquipDesequipObj()
     {
         _uiText.text = _msgEquip;
-        PlayerController.Instance.objCollected = !PlayerController.Instance.objCollected;
-        PlayerController.Instance.EquipPartyHat(PlayerController.Instance.objCollected);
+
+        GameManager.Instance.FlipPlayerPartyHatState();
     }
 
     public void ExitInteraction()
     {
-        OnExitInteract.Invoke();
+        GameManager.Instance.SetPlayerInputsState(true);
+        GameManager.Instance.SetCursorState(false);
+
         _interactionCanvas.SetActive(false);
     }
 }
