@@ -7,56 +7,49 @@ public class SaveNpc : MonoBehaviour, IInteractable
 {
     [Header("Interact Settings")]
     [SerializeField] private string _prompt = "Prem \"E\" per interactuar";
-    [SerializeField] private GameObject _interactionCanvas;
 
     [Header("Text Messages")]
-    [SerializeField] private TextMeshProUGUI _uiText;
     [SerializeField] private string _msgSave = "El joc s'ha guardat";
     [SerializeField] private string _msgLoad = "El joc s'ha carregat";
     [SerializeField] private string _msgEquip = "S'ha canviat l'estat del objecte equipat";
 
     public string InteractionPrompt => _prompt;
 
-    [Header("Interact Events")]
-    [Tooltip("Player Inputs Disable/Player Controller Cursor True")] public UnityEvent OnInteract;
-    [Tooltip("Player Inputs Enable/Player Controller Cursor False")] public UnityEvent OnExitInteract;
-
     public bool Interact(PlayerInteraction player)
     {
-        _uiText.text = string.Empty;
+        UIManager.Instance.MenuSaveNPC = true;
+        UIManager.Instance.MenuSaveNPCStateText = string.Empty;
 
         GameManager.Instance.SetPlayerInputsState(false);
         GameManager.Instance.SetCursorState(true);
-
-        _interactionCanvas.SetActive(true);
 
         return true;
     }
 
     public void SaveGame()
     {
-        _uiText.text = _msgSave;
+        UIManager.Instance.MenuSaveNPCStateText = _msgSave;
         SaveSystem.Save();
     }
 
     public void LoadGame()
     {
-        _uiText.text = _msgLoad;
+        UIManager.Instance.MenuSaveNPCStateText = _msgLoad;
         SaveSystem.Load();
     }
 
     public void EquipDesequipObj()
     {
-        _uiText.text = _msgEquip;
-
+        UIManager.Instance.MenuSaveNPCStateText = _msgEquip;
         GameManager.Instance.FlipPlayerPartyHatState();
     }
 
     public void ExitInteraction()
     {
+        UIManager.Instance.MenuSaveNPCStateText = string.Empty;
+        UIManager.Instance.MenuSaveNPC = false;
+
         GameManager.Instance.SetPlayerInputsState(true);
         GameManager.Instance.SetCursorState(false);
-
-        _interactionCanvas.SetActive(false);
     }
 }

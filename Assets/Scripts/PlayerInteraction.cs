@@ -30,7 +30,7 @@ public class PlayerInteraction : MonoBehaviour
             
             if (interactable != null)
             {
-                _interactionText.text = interactable.InteractionPrompt;
+                UIManager.Instance.PlayerInteractionText = interactable.InteractionPrompt;
 
                 if (_playerInputs.Interact)
                 {
@@ -40,12 +40,12 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-                _interactionText.text = string.Empty;
+                UIManager.Instance.PlayerInteractionText = string.Empty;
             }
         }
         else
         {
-            _interactionText.text = string.Empty;
+            UIManager.Instance.PlayerInteractionText = string.Empty;
         }
     }
 
