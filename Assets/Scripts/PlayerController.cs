@@ -5,8 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInputs), typeof(CharacterController), typeof(PlayerState))]
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController Instance { get; private set; }
-
     [Header("References")]
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private CinemachineCamera _playerCamera;
@@ -44,6 +42,7 @@ public class PlayerController : MonoBehaviour
     private float _verticalVelocity;
     private bool _isGrounded;
     private float _stepOffset;
+    private Vector3 _groundShperePos;
 
     public bool objCollected = false;
 
@@ -51,18 +50,6 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        /*if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Instance.transform.position = transform.position;
-            Destroy(gameObject);
-            return;
-        }*/
-
         _playerInputs = GetComponent<PlayerInputs>();
         _playerState = GetComponent<PlayerState>();
         _thirdPersonFollow = _playerCamera.GetComponent<CinemachineThirdPersonFollow>();
@@ -78,20 +65,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.SetCursorState(false);
-    }
-
-    public void SetCursorState(bool state)
-    {
-        if (state)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
     }
 
     private void Update()
@@ -163,16 +136,14 @@ public class PlayerController : MonoBehaviour
         bool isMovingLaterlally = IsMovingLaterally();
         bool isSprinting = _playerInputs.Sprint && isMovingLaterlally;
 
-        // Primer comprova si ha saltat (màxima prioritat)
         if (_jumpedLastFrame)
         {
             _characterController.stepOffset = 0f;
             _playerState.SetPlayerMoveState(PlayerMoveState.Jumping);
             _jumpedLastFrame = false;
-            return; // Surt immediatament
+            return;
         }
 
-        // Comprova si està a l'aire (sense grounded i sense coyote time)
         if (!_isGrounded && _timeSinceLastGrounded > 0.15f)
         {
             _characterController.stepOffset = 0f;
@@ -181,18 +152,16 @@ public class PlayerController : MonoBehaviour
             {
                 _playerState.SetPlayerMoveState(PlayerMoveState.Jumping);
             }
-            else
+            else if (_verticalVelocity < -1f)
             {
                 _playerState.SetPlayerMoveState(PlayerMoveState.Falling);
             }
         }
-        // Si està dins del coyote time però està caient, també marca com Falling
         else if (!_isGrounded && _verticalVelocity < -2f)
         {
             _characterController.stepOffset = 0f;
             _playerState.SetPlayerMoveState(PlayerMoveState.Falling);
         }
-        // Estats de terra
         else if (_isGrounded)
         {
             _characterController.stepOffset = _stepOffset;
@@ -222,21 +191,14 @@ public class PlayerController : MonoBehaviour
 
     private void GroundCheck()
     {
-        float spherePositionY = transform.position.y + _characterController.radius - _characterController.skinWidth;
+        /*float spherePositionY = transform.position.y + _characterController.radius - _characterController.skinWidth;
         Vector3 spherePosition = new Vector3(transform.position.x, spherePositionY, transform.position.z);
 
-        _isGrounded = Physics.CheckSphere(spherePosition, _characterController.radius, _groundLayers, QueryTriggerInteraction.Ignore);
+        _isGrounded = Physics.CheckSphere(spherePosition, _characterController.radius, _groundLayers, QueryTriggerInteraction.Ignore);*/
 
-        /*if (Physics.SphereCast(transform.position, _characterController.radius, Vector3.down, out RaycastHit hitInfo, _groundLayers))
-        {
-            float distanceToGround = hitInfo.distance - _characterController.height / 2f;
-            _isGrounded = distanceToGround <= 0.05f;
-            Debug.Log("Distance to Ground: " + distanceToGround);
-        }
-        else
-        {
-            _isGrounded = false;
-        }*/
+        _groundShperePos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        _isGrounded = Physics.CheckSphere(_groundShperePos, _characterController.radius - 0.1f, _groundLayers, QueryTriggerInteraction.Ignore);
+
         Debug.Log("Is Grounded: " + _isGrounded);
 
         if (_isGrounded)
@@ -326,11 +288,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        float spherePositionY = transform.position.y + _characterController.radius - _characterController.skinWidth;
-        Vector3 spherePosition = new Vector3(transform.position.x, spherePositionY, transform.position.z);
+        _groundShperePos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(spherePosition, _characterController.radius);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(_groundShperePos, _characterController.radius - 0.1f);
     }
 
     public void SetOnLoad(Quaternion rotation)
