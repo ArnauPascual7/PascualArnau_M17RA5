@@ -1,6 +1,8 @@
 using System;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Animations;
+using UnityEngine.Animations.Rigging;
 
 [RequireComponent(typeof(PlayerInputs), typeof(CharacterController), typeof(PlayerState))]
 public class PlayerController : MonoBehaviour
@@ -11,6 +13,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _cameraTarget;
     [SerializeField] private CinemachineCamera _danceCamera;
     [SerializeField] private GameObject _partyHat;
+    [SerializeField] private GameObject _rifle;
+    [SerializeField] private MultiAimConstraint[] _multiAimConstraints;
+    [SerializeField] private Transform _rifleAimTarget;
 
     [Header("Movement Settings")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -90,6 +95,7 @@ public class PlayerController : MonoBehaviour
             if (_playerInventory.RifleIsEquipped)
             {
                 Aim();
+                RifleLook();
             }
         }
     }
@@ -252,6 +258,37 @@ public class PlayerController : MonoBehaviour
 
             _thirdPersonFollow.CameraDistance = Mathf.Lerp(_thirdPersonFollow.CameraDistance, cameraDistance, _aimTransitionSpeed * Time.deltaTime);
             _thirdPersonFollow.CameraSide = Mathf.Lerp(_thirdPersonFollow.CameraSide, cameraSideOffset, _aimTransitionSpeed * Time.deltaTime);
+        }
+    }
+
+    private void RifleLook()
+    {
+        if (_playerInputs.Aim)
+        {
+            foreach (var constraint in _multiAimConstraints)
+            {
+                constraint.weight = 0.5f;
+            }
+
+            Vector2 screenCentre = new Vector2(Screen.width / 2f, Screen.height / 2f);
+            Ray ray = Camera.main.ScreenPointToRay(screenCentre);
+
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, 100f))
+            {
+                _rifleAimTarget.transform.position = hitInfo.point;
+            }
+            else
+            {
+                _rifleAimTarget.transform.position = ray.GetPoint(100f);
+            }
+
+        }
+        else
+        {
+            foreach (var constraint in _multiAimConstraints)
+            {
+                constraint.weight = 0f;
+            }
         }
     }
 
