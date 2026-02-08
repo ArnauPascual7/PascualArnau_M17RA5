@@ -11,6 +11,10 @@ public class PlayerAnimation : MonoBehaviour
     public string FallingParam = "Falling";
     public string DancingParam = "Dancing";
 
+    public string HasRifleParam = "HasRifle";
+    public string AimingParam = "Aiming";
+    public string FireingParam = "Fireing";
+
     private Animator _animator;
 
     private PlayerInputs _playerInputs;
@@ -39,6 +43,10 @@ public class PlayerAnimation : MonoBehaviour
         bool isGrounded = _playerState.InGroundState();
         bool isDancing = _playerState.CurrentPlayerMoveState == PlayerMoveState.Dancing;
 
+        bool hasRifle = _playerState.CurrentPlayerAimState != PlayerAimState.None;
+        bool isAiming = _playerState.CurrentPlayerAimState == PlayerAimState.Aiming || _playerState.CurrentPlayerAimState == PlayerAimState.Fireing;
+        bool isFireing = _playerState.CurrentPlayerAimState == PlayerAimState.Fireing;
+
         Vector2 inputTarget =
             isSprinting ? _playerInputs.Move * _sprintMaxBlendValue :
             _playerInputs.Move * _walkMaxBlendValue;
@@ -51,5 +59,11 @@ public class PlayerAnimation : MonoBehaviour
         _animator.SetBool(JumpingParam, isJumping);
         _animator.SetBool(FallingParam, isFalling);
         _animator.SetBool(DancingParam, isDancing);
+        _animator.SetBool(HasRifleParam, hasRifle);
+        _animator.SetBool(AimingParam, isAiming);
+        _animator.SetBool(FireingParam, isFireing);
+
+        if (isDancing) _animator.SetLayerWeight(1, 0f);
+        else _animator.SetLayerWeight(1, 1f);
     }
 }

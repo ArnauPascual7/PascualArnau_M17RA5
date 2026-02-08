@@ -26,11 +26,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _lookSense = 0.1f;
     [SerializeField] private float _lookLimitV = 70f;
     [SerializeField] private float _aimLookSenseMultiplier = 0.5f;
-    [SerializeField] private float _aimCameraDistance = 2f;
+    [SerializeField] private float _aimCameraDistance = 1f;
+    [SerializeField] private float _aimCameraSideOffset = 0.7f;
     [SerializeField] private float _aimTransitionSpeed = 10f;
 
     private PlayerInputs _playerInputs;
     private PlayerState _playerState;
+    private PlayerInventory _playerInventory;
     private CinemachineThirdPersonFollow _thirdPersonFollow;
 
     private Vector2 _cameraRotation = Vector2.zero;
@@ -39,24 +41,23 @@ public class PlayerController : MonoBehaviour
     private float _timeSinceLastGrounded = 0f;
     private bool _jumpedLastFrame = false;
     private float _normalCameraDistance;
+    private float _normalCameraSideOffset;
     private float _verticalVelocity;
     private bool _isGrounded;
     private float _stepOffset;
     private Vector3 _groundShperePos;
 
-    public bool objCollected = false;
-
-    private PlayerMoveState _lastMovementState = PlayerMoveState.Falling;
-
     private void Awake()
     {
         _playerInputs = GetComponent<PlayerInputs>();
         _playerState = GetComponent<PlayerState>();
+        _playerInventory = GetComponent<PlayerInventory>();
         _thirdPersonFollow = _playerCamera.GetComponent<CinemachineThirdPersonFollow>();
 
         if (_thirdPersonFollow != null)
         {
             _normalCameraDistance = _thirdPersonFollow.CameraDistance;
+            _normalCameraSideOffset = _thirdPersonFollow.CameraSide;
         }
 
         _stepOffset = _characterController.stepOffset;
@@ -70,6 +71,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         UpdateMoveState();
+        UpdateAimState();
 
         GroundCheck();
         Gravity();
@@ -84,7 +86,11 @@ public class PlayerController : MonoBehaviour
 
             Jump();
             Movement();
-            Aim();
+
+            if (_playerInventory.RifleIsEquipped)
+            {
+                Aim();
+            }
         }
     }
 
@@ -93,45 +99,8 @@ public class PlayerController : MonoBehaviour
         Rotation();
     }
 
-    /*private void UpdateMoveState()
-    {
-        _lastMovementState = _playerState.CurrentPlayerMoveState;
-
-        bool isMoving = _playerInputs.Move != Vector2.zero;
-        bool isMovingLaterlally = IsMovingLaterally();
-        bool isSprinting = _playerInputs.Sprint && isMovingLaterlally;
-
-        PlayerMoveState state;
-        if (isSprinting)
-        {
-            state = PlayerMoveState.Sprinting;
-        }
-        else if (isMovingLaterlally || isMoving)
-        {
-            state = PlayerMoveState.Walking;
-        }
-        else
-        {
-            state = PlayerMoveState.Idle;
-        }
-
-        _playerState.SetPlayerMoveState(state);
-
-        if ((!_isGrounded || _jumpedLastFrame) && _characterController.velocity.y > 0)
-        {
-            _playerState.SetPlayerMoveState(PlayerMoveState.Jumping);
-            _jumpedLastFrame = false;
-            _characterController.stepOffset = 0f;
-        }
-        else
-        {
-            _characterController.stepOffset = _stepOffset;
-        }
-    }*/
     private void UpdateMoveState()
     {
-        _lastMovementState = _playerState.CurrentPlayerMoveState;
-
         bool isMoving = _playerInputs.Move != Vector2.zero;
         bool isMovingLaterlally = IsMovingLaterally();
         bool isSprinting = _playerInputs.Sprint && isMovingLaterlally;
@@ -189,13 +158,35 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void UpdateAimState()
+    {
+        PlayerAimState state;
+
+        if (_playerInventory.RifleIsEquipped)
+        {
+            if (_playerInputs.Aim && _playerInputs.Fire)
+            {
+                state = PlayerAimState.Fireing;
+            }
+            else if (_playerInputs.Aim)
+            {
+                state = PlayerAimState.Aiming;
+            }
+            else
+            {
+                state = PlayerAimState.Hip;
+            }
+        }
+        else
+        {
+            state = PlayerAimState.None;
+        }
+
+        _playerState.SetPlayerAimState(state);
+    }
+
     private void GroundCheck()
     {
-        /*float spherePositionY = transform.position.y + _characterController.radius - _characterController.skinWidth;
-        Vector3 spherePosition = new Vector3(transform.position.x, spherePositionY, transform.position.z);
-
-        _isGrounded = Physics.CheckSphere(spherePosition, _characterController.radius, _groundLayers, QueryTriggerInteraction.Ignore);*/
-
         _groundShperePos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         _isGrounded = Physics.CheckSphere(_groundShperePos, _characterController.radius - 0.1f, _groundLayers, QueryTriggerInteraction.Ignore);
 
@@ -257,8 +248,10 @@ public class PlayerController : MonoBehaviour
         if (_thirdPersonFollow != null)
         {
             float cameraDistance = _playerInputs.Aim ? _aimCameraDistance : _normalCameraDistance;
+            float cameraSideOffset = _playerInputs.Aim ? _aimCameraSideOffset : _normalCameraSideOffset;
 
             _thirdPersonFollow.CameraDistance = Mathf.Lerp(_thirdPersonFollow.CameraDistance, cameraDistance, _aimTransitionSpeed * Time.deltaTime);
+            _thirdPersonFollow.CameraSide = Mathf.Lerp(_thirdPersonFollow.CameraSide, cameraSideOffset, _aimTransitionSpeed * Time.deltaTime);
         }
     }
 

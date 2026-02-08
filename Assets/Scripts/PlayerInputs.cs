@@ -11,6 +11,7 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public bool Sprint { get; private set; }
     public bool Jump { get; private set; }
     public bool Aim { get; private set; }
+    public bool Fire { get; private set; }
     public bool Interact { get; private set; }
     public bool Dance { get; private set; }
 
@@ -46,7 +47,7 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        Debug.LogWarning("(OnAttack) Not implemented!");
+        Fire = context.ReadValueAsButton();
     }
 
     public void OnInteract(InputAction.CallbackContext context)
