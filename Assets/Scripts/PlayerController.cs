@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject _rifle;
     [SerializeField] private MultiAimConstraint[] _multiAimConstraints;
     [SerializeField] private Transform _rifleAimTarget;
+    [SerializeField] private TwoBoneIKConstraint _leftHandIKConstrain;
 
     [Header("Movement Settings")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -269,6 +270,7 @@ public class PlayerController : MonoBehaviour
             {
                 constraint.weight = 0.5f;
             }
+            _leftHandIKConstrain.weight = 1f;
 
             Vector2 screenCentre = new Vector2(Screen.width / 2f, Screen.height / 2f);
             Ray ray = Camera.main.ScreenPointToRay(screenCentre);
@@ -289,6 +291,7 @@ public class PlayerController : MonoBehaviour
             {
                 constraint.weight = 0f;
             }
+            _leftHandIKConstrain.weight = 0f;
         }
     }
 

@@ -6,7 +6,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private GameObject _rifle;
 
     public bool PartyHatIsEquipped { get; private set; }
-    public bool RifleIsEquipped { get; private set; } = true;
+    public bool RifleIsEquipped { get; private set; }
 
     public void SetPartyHatState(bool state)
     {
