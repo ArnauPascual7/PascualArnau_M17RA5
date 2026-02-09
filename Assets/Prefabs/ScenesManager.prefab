@@ -44,5 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 100f0ce055bcef64494a5fe3e1a86b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScenesManager
-  _mainSceneName: TestScene
+  _mainSceneName: MainScene
   _lampSceneName: LampScene
+  _sceneLoaderName: Portal
+  _exitIndex: 0

@@ -5,6 +5,18 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
+    #region Save NPC Menu Settings
+    [Header("Save NPC Menu UI Elements")]
+    [SerializeField] private TextMeshProUGUI _pInteractionText;
+    [SerializeField] private GameObject _menuSaveNPC;
+    [SerializeField] private TextMeshProUGUI _menuStateText;
+
+    [Header("Save NPC Text Messages")]
+    [SerializeField] private string _msgSave = "El joc s'ha guardat";
+    [SerializeField] private string _msgLoad = "El joc s'ha carregat";
+    [SerializeField] private string _msgEquip = "S'ha canviat l'estat del objecte equipat";
+    #endregion
+
     public string PlayerInteractionText
     {
         get { return _pInteractionText.text; }
@@ -13,6 +25,8 @@ public class UIManager : MonoBehaviour
             _pInteractionText.text = value;
         }
     }
+
+    #region Save NPC Menu UI Elements Properties
     public bool MenuSaveNPC
     {
         get { return _menuSaveNPC.activeSelf; }
@@ -30,10 +44,7 @@ public class UIManager : MonoBehaviour
             _menuStateText.text = value;
         }
     }
-
-    [SerializeField] private TextMeshProUGUI _pInteractionText;
-    [SerializeField] private GameObject _menuSaveNPC;
-    [SerializeField] private TextMeshProUGUI _menuStateText;
+    #endregion
 
     private void Awake()
     {
@@ -48,4 +59,33 @@ public class UIManager : MonoBehaviour
             return;
         }
     }
+
+    #region Save NPC Menu Button Methods
+    public void SaveGame()
+    {
+        _menuStateText.text = _msgSave;
+        SaveSystem.Save();
+    }
+
+    public void LoadGame()
+    {
+        _menuStateText.text = _msgLoad;
+        SaveSystem.Load();
+    }
+
+    public void EquipDesequipObj()
+    {
+        _menuStateText.text = _msgEquip;
+        GameManager.Instance.FlipPlayerPartyHatState();
+    }
+
+    public void ExitInteraction()
+    {
+        _menuStateText.text = string.Empty;
+        MenuSaveNPC = false;
+
+        GameManager.Instance.SetPlayerInputsState(true);
+        GameManager.Instance.SetCursorState(false);
+    }
+    #endregion
 }

@@ -2257,7 +2257,7 @@ Transform:
   m_GameObject: {fileID: 5150250760444917850}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.480011, y: 1.7999992, z: -2}
+  m_LocalPosition: {x: 0.47999573, y: 1.7999992, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2727,7 +2727,7 @@ Transform:
   m_GameObject: {fileID: 6420733098468472361}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.480011, y: 1.7999992, z: -2}
+  m_LocalPosition: {x: 0.47999573, y: 1.7999992, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2805,7 +2805,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBrain
   ShowDebugText: 0
-  ShowCameraFrustum: 1
+  ShowCameraFrustum: 0
   IgnoreTimeScale: 0
   WorldUpOverride: {fileID: 0}
   ChannelMask: -1
