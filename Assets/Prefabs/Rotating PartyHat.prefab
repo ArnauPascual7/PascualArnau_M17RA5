@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9051243206054886934}
   - component: {fileID: 3421442194902535947}
-  m_Layer: 15
+  m_Layer: 11
   m_Name: Minimap Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3492584466545391479}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Rotating PartyHat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 2995744561703312268}
   - component: {fileID: 5475410860379825331}
   - component: {fileID: 6182791928353353614}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,9 +262,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7316996296587437332}
   - component: {fileID: 3417376580861121809}
-  - component: {fileID: 5857652781892011731}
   - component: {fileID: 5353514050183695151}
   - component: {fileID: 1769082755410124984}
+  - component: {fileID: 6470655155466627231}
   m_Layer: 11
   m_Name: Party Hat
   m_TagString: Untagged
@@ -349,28 +349,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0, z: 1.925}
     m_Extent: {x: 1, y: 1, z: 1.925}
   m_DirtyAABB: 0
---- !u!64 &5857652781892011731
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7431512366358645876}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -520064276692346053, guid: 9441d3b0280eba74fa8224203718903a, type: 3}
 --- !u!114 &5353514050183695151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -401,3 +379,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PartyHat
   _prompt: Prem "E" per recollir
   _parent: {fileID: 1775658740758796989}
+--- !u!135 &6470655155466627231
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7431512366358645876}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 4
+  m_Center: {x: 0, y: 0, z: 2}

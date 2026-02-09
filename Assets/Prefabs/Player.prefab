@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c430f382484144e925c097c2d33cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Animation.Rigging::UnityEngine.Animations.Rigging.MultiAimConstraint
-  m_Weight: 0.5
+  m_Weight: 0
   m_Data:
     m_ConstrainedObject: {fileID: 5158832326138412658}
     m_SourceObjects:
@@ -1212,7 +1212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Animation.Rigging::UnityEngine.Animations.Rigging.TwoBoneIKConstraint
-  m_Weight: 1
+  m_Weight: 0
   m_Data:
     m_Root: {fileID: 1619932292414188026}
     m_Mid: {fileID: 7546604641021972475}
@@ -2123,7 +2123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c430f382484144e925c097c2d33cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Animation.Rigging::UnityEngine.Animations.Rigging.MultiAimConstraint
-  m_Weight: 0.5
+  m_Weight: 0
   m_Data:
     m_ConstrainedObject: {fileID: 97767195533893120}
     m_SourceObjects:
@@ -3296,7 +3296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c430f382484144e925c097c2d33cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Animation.Rigging::UnityEngine.Animations.Rigging.MultiAimConstraint
-  m_Weight: 0.5
+  m_Weight: 0
   m_Data:
     m_ConstrainedObject: {fileID: 1128126270917444507}
     m_SourceObjects:
@@ -3513,6 +3513,7 @@ MonoBehaviour:
   - {fileID: 2475308978178905801}
   - {fileID: 345285308817077712}
   _rifleAimTarget: {fileID: 377112767472014690}
+  _leftHandIKConstrain: {fileID: 8682724011138437942}
   _moveSpeed: 5
   _sprintSpeed: 8
   _aimSpeed: 3
@@ -3645,7 +3646,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &59589523788524903
 Transform:
   m_ObjectHideFlags: 0

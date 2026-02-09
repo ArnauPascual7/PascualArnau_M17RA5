@@ -102,7 +102,8 @@ GameObject:
   - component: {fileID: 8891985279643992055}
   - component: {fileID: 7641745534561049695}
   - component: {fileID: 4446448236170130522}
-  - component: {fileID: 3258312351837481504}
+  - component: {fileID: 9152828298650156332}
+  - component: {fileID: 7961108318089039523}
   m_Layer: 11
   m_Name: Rotating AK74
   m_TagString: Untagged
@@ -202,8 +203,21 @@ MonoBehaviour:
   _rotationSpeed: 10
   _jumpPower: 2
   _jumpDuration: 4
---- !u!64 &3258312351837481504
-MeshCollider:
+--- !u!114 &9152828298650156332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3923165977225444256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77377d0d92f6f034ca9a367d8b7026c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Rifle
+  _prompt: Prem "E" per recollir
+--- !u!135 &7961108318089039523
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -220,10 +234,9 @@ MeshCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 6f966b9a7c817ed49973b4a8762cbbdf, type: 3}
+  serializedVersion: 3
+  m_Radius: 0.35
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4642136564284981354
 GameObject:
   m_ObjectHideFlags: 0
