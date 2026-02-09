@@ -9,6 +9,10 @@ public class ScenesManager : MonoBehaviour
     [SerializeField] private string _mainSceneName = "MainScene";
     [SerializeField] private string _lampSceneName = "LampScene";
 
+    [Header("Scene Loader Settings")]
+    [SerializeField] private string _sceneLoaderName = "Portal";
+    [SerializeField] private int _exitIndex = 2;
+
     private void Awake()
     {
         if (Instance == null)
@@ -32,24 +36,6 @@ public class ScenesManager : MonoBehaviour
         else if (SceneManager.GetActiveScene().name == _lampSceneName)
         {
             SceneManager.LoadScene(_mainSceneName);
-        }
-        else
-        {
-            Debug.LogError("Error Comparing Scenes! Current Scene: " + SceneManager.GetActiveScene().name);
-        }
-    }
-
-    public void SwitchScene(Vector3 playerPosition, Quaternion playerRotation)
-    {
-        if (SceneManager.GetActiveScene().name == _mainSceneName)
-        {
-            SceneManager.LoadScene(_lampSceneName);
-            GameManager.Instance.SetPlayerPositionRotation(playerPosition, playerRotation);
-        }
-        else if (SceneManager.GetActiveScene().name == _lampSceneName)
-        {
-            SceneManager.LoadScene(_mainSceneName);
-            GameManager.Instance.SetPlayerPositionRotation(playerPosition, playerRotation);
         }
         else
         {

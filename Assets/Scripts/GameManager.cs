@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
             {
                 if (obj != Player)
                 {
+                    Player.transform.position = obj.transform.position;
                     Destroy(obj);
                 }
             }

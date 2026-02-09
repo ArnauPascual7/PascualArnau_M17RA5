@@ -197,8 +197,6 @@ public class PlayerController : MonoBehaviour
         _groundShperePos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         _isGrounded = Physics.CheckSphere(_groundShperePos, _characterController.radius - 0.1f, _groundLayers, QueryTriggerInteraction.Ignore);
 
-        Debug.Log("Is Grounded: " + _isGrounded);
-
         if (_isGrounded)
         {
             _timeSinceLastGrounded = 0f;

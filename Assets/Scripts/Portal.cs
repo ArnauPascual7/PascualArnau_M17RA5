@@ -12,7 +12,7 @@ public class Portal : MonoBehaviour
     {
         if (other.gameObject.layer == _playerLayer)
         {
-            ScenesManager.Instance.SwitchScene(_exitPoint.position, transform.rotation);
+            ScenesManager.Instance.SwitchScene();
         }
     }
 }
