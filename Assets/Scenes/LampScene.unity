@@ -911,10 +911,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Large_round_lamp
       objectReference: {fileID: 0}
-    - target: {fileID: 6769232865274190623, guid: 63595670e1005b644a5d30b65484a33d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6769232865274545983, guid: 63595670e1005b644a5d30b65484a33d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1406,7 +1402,7 @@ GameObject:
   - component: {fileID: 1269377941}
   - component: {fileID: 1269377940}
   - component: {fileID: 1269377939}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3456,7 +3452,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 4097
   m_RenderingLayerMask: 2
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0

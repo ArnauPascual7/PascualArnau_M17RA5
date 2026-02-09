@@ -258,6 +258,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6629149707060845393, guid: 138c30df177b8dc4f8178fbb1e42d852, type: 3}
+      propertyPath: m_text
+      value: Sortir
+      objectReference: {fileID: 0}
     - target: {fileID: 8136531454347048750, guid: 138c30df177b8dc4f8178fbb1e42d852, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -1435,7 +1435,7 @@ Transform:
   m_GameObject: {fileID: 5165740363600628506}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 20, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2360,9 +2360,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveNpc
   _prompt: Prem "E" per interactuar
-  _msgSave: El joc s'ha guardat
-  _msgLoad: El joc s'ha carregat
-  _msgEquip: S'ha canviat l'estat del objecte equipat
 --- !u!1 &8750625412258702017
 GameObject:
   m_ObjectHideFlags: 0

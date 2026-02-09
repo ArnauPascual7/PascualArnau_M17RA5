@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4464657355548479454}
   - component: {fileID: 4102122466868448696}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: TerrainGroup_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 2917968028961609420}
   - component: {fileID: 2162618792763341988}
   - component: {fileID: 2503695942709156572}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: RealisticTerrainV2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

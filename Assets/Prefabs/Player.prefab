@@ -992,7 +992,7 @@ Transform:
   m_GameObject: {fileID: 2708901233680895738}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 21, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 0.02, y: 0.019999998, z: 0.019999998}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1661,7 +1661,7 @@ Transform:
   m_GameObject: {fileID: 4046055660301422909}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 25, z: 0}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1706,7 +1706,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 32768
+    m_Bits: 36864
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 5bd9e7370ea910b42bce5a8904777818, type: 2}
   m_TargetDisplay: 0
@@ -2257,7 +2257,7 @@ Transform:
   m_GameObject: {fileID: 5150250760444917850}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.48000002, y: 1.8000001, z: -1.7269058}
+  m_LocalPosition: {x: 0.47999573, y: 1.7999992, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2727,7 +2727,7 @@ Transform:
   m_GameObject: {fileID: 6420733098468472361}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.48000002, y: 1.8000001, z: -1.7269058}
+  m_LocalPosition: {x: 0.47999573, y: 1.7999992, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2772,7 +2772,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 3127
+    m_Bits: 7223
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -3521,7 +3521,7 @@ MonoBehaviour:
   _gravity: 9.8
   _groundLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 4097
   _lookSense: 0.1
   _lookLimitV: 70
   _aimLookSenseMultiplier: 0.5
