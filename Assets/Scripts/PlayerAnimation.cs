@@ -42,27 +42,22 @@ public class PlayerAnimation : MonoBehaviour
         bool isAiming = _playerState.CurrentPlayerAimState == PlayerAimState.Aiming || _playerState.CurrentPlayerAimState == PlayerAimState.Fireing;
         bool isFireing = _playerState.CurrentPlayerAimState == PlayerAimState.Fireing;
 
-        // Calcular blend value amb direcció
         float targetBlendValue = 0f;
 
         if (_playerInputs.Move.magnitude > 0.01f)
         {
-            // Detectar si es mou cap enrere
             bool isMovingBackwards = _playerInputs.Move.y < -0.1f;
 
             if (isMovingBackwards)
             {
-                // Cap enrere: -1 a -0.5 segons la magnitud
                 targetBlendValue = Mathf.Lerp(-0.5f, _backwardsMaxBlendValue, _playerInputs.Move.magnitude);
             }
             else if (isSprinting)
             {
-                // Sprint: 1 fins a 1.5 segons la magnitud
                 targetBlendValue = Mathf.Lerp(1f, _sprintMaxBlendValue, _playerInputs.Move.magnitude);
             }
             else
             {
-                // Caminant: 0 a 1 segons la magnitud
                 targetBlendValue = _playerInputs.Move.magnitude;
             }
         }

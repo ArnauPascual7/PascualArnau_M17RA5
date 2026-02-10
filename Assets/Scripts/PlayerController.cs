@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement Settings")]
     [SerializeField] private float _moveSpeed = 4f;
+    [SerializeField] private float _backwardsSpeed = 2f;
     [SerializeField] private float _sprintSpeed = 8f;
     [SerializeField] private float _aimSpeed = 2f;
     [SerializeField] private float _jumpHeight = 8f;
@@ -237,6 +238,10 @@ public class PlayerController : MonoBehaviour
         if (_playerState.CurrentPlayerAimState == PlayerAimState.Aiming && _playerState.CurrentPlayerAimState == PlayerAimState.Fireing)
         {
             currentSpeed = _aimSpeed;
+        }
+        else if (_playerInputs.Move.y < -0.1f)
+        {
+            currentSpeed = _backwardsSpeed;
         }
         else if (_playerInputs.Sprint && _playerInputs.Move.y > 0.1f)
         {
