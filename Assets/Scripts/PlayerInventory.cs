@@ -19,4 +19,9 @@ public class PlayerInventory : MonoBehaviour
         RifleIsEquipped = state;
         _rifle.SetActive(state);
     }
+
+    public void SetOnlyRifleGameObjectState(bool state)
+    {
+        _rifle.SetActive(state);
+    }
 }

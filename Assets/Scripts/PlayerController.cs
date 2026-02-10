@@ -86,10 +86,12 @@ public class PlayerController : MonoBehaviour
         if (_playerState.CurrentPlayerMoveState == PlayerMoveState.Dancing)
         {
             _danceCamera.Priority = 1;
+            GameManager.Instance.SetPlayerRifleState(false);
         }
         else
         {
             _danceCamera.Priority = -1;
+            GameManager.Instance.SetPlayerRifleState(true);
 
             Jump();
             Movement();
@@ -160,6 +162,8 @@ public class PlayerController : MonoBehaviour
 
             if (_playerInputs.Dance)
             {
+                ResetAimConstraintsWeights();
+
                 state = PlayerMoveState.Dancing;
             }
 
@@ -295,12 +299,17 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            foreach (var constraint in _multiAimConstraints)
-            {
-                constraint.weight = 0f;
-            }
-            _leftHandIKConstrain.weight = 0f;
+            ResetAimConstraintsWeights();
         }
+    }
+
+    private void ResetAimConstraintsWeights()
+    {
+        foreach (var constraint in _multiAimConstraints)
+        {
+            constraint.weight = 0f;
+        }
+        _leftHandIKConstrain.weight = 0f;
     }
 
     private void Rotation()

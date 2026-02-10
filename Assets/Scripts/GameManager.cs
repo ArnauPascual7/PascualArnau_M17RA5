@@ -86,6 +86,14 @@ public class GameManager : MonoBehaviour
         _playerInventory.SetPartyHatState(!state);
     }
 
+    public void SetPlayerRifleState(bool state)
+    {
+        if (_playerInventory.RifleIsEquipped)
+        {
+            _playerInventory.SetOnlyRifleGameObjectState(state);
+        }
+    }
+
     public void Save(ref PlayerSaveData data)
     {
         data.Position = Player.transform.position;
