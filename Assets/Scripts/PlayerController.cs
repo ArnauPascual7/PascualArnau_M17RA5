@@ -19,9 +19,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private TwoBoneIKConstraint _leftHandIKConstrain;
 
     [Header("Movement Settings")]
-    [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private float _moveSpeed = 4f;
     [SerializeField] private float _sprintSpeed = 8f;
-    [SerializeField] private float _aimSpeed = 3f;
+    [SerializeField] private float _aimSpeed = 2f;
     [SerializeField] private float _jumpHeight = 8f;
 
     [Header("Ground Settings")]
@@ -110,7 +110,8 @@ public class PlayerController : MonoBehaviour
     {
         bool isMoving = _playerInputs.Move != Vector2.zero;
         bool isMovingLaterlally = IsMovingLaterally();
-        bool isSprinting = _playerInputs.Sprint && isMovingLaterlally;
+        bool isMovingForward = _playerInputs.Move.y > 0.1f;
+        bool isSprinting = _playerInputs.Sprint && isMovingLaterlally && isMovingForward;
 
         if (_jumpedLastFrame)
         {
@@ -233,11 +234,15 @@ public class PlayerController : MonoBehaviour
         Vector3 movementDirection = cameraForward * _playerInputs.Move.y + cameraRight * _playerInputs.Move.x;
 
         float currentSpeed = _moveSpeed;
-        if (_playerInputs.Aim)
+        if (_playerState.CurrentPlayerAimState == PlayerAimState.Aiming)
         {
             currentSpeed = _aimSpeed;
         }
-        else if (_playerInputs.Sprint)
+        else if (_playerInputs.Sprint && _playerInputs.Move.y > 0.1f)
+        {
+            currentSpeed = _sprintSpeed;
+        }
+        else if (_playerState.CurrentPlayerMoveState == PlayerMoveState.Sprinting)
         {
             currentSpeed = _sprintSpeed;
         }
