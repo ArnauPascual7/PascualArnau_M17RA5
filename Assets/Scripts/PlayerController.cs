@@ -234,7 +234,7 @@ public class PlayerController : MonoBehaviour
         Vector3 movementDirection = cameraForward * _playerInputs.Move.y + cameraRight * _playerInputs.Move.x;
 
         float currentSpeed = _moveSpeed;
-        if (_playerState.CurrentPlayerAimState == PlayerAimState.Aiming)
+        if (_playerState.CurrentPlayerAimState == PlayerAimState.Aiming && _playerState.CurrentPlayerAimState == PlayerAimState.Fireing)
         {
             currentSpeed = _aimSpeed;
         }
