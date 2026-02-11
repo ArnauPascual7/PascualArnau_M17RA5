@@ -86,12 +86,38 @@ public class GameManager : MonoBehaviour
         _playerInventory.SetPartyHatState(!state);
     }
 
+    public void SetPlayerPartyHatState(bool state)
+    {
+        if (_playerInventory.PartyHatIsEquipped)
+        {
+            _playerInventory.SetOnlyPartyHatGameObjectState(state);
+        }
+    }
+
     public void SetPlayerRifleState(bool state)
     {
         if (_playerInventory.RifleIsEquipped)
         {
             _playerInventory.SetOnlyRifleGameObjectState(state);
         }
+    }
+
+    public void DisableVisualPlayer()
+    {
+        _playerInputs.enabled = false;
+        _playerController.enabled = false;
+        Player.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+        SetPlayerPartyHatState(false);
+        SetPlayerRifleState(false);
+    }
+
+    public void EnableVisualPlayer()
+    {
+        _playerInputs.enabled = true;
+        _playerController.enabled = true;
+        Player.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+        SetPlayerPartyHatState(true);
+        SetPlayerRifleState(true);
     }
 
     public void Save(ref PlayerSaveData data)

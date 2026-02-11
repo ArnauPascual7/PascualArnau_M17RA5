@@ -14,6 +14,7 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public bool Fire { get; private set; }
     public bool Interact { get; private set; }
     public bool Dance { get; private set; }
+    public bool Explode { get; private set; }
 
     private void OnEnable()
     {
@@ -38,6 +39,7 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         InputActions.Player.Disable();
         InputActions.Player.RemoveCallbacks(this);
+        InputActions.Disable();
     }
 
     private void LateUpdate()
@@ -86,5 +88,10 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public void OnDance(InputAction.CallbackContext context)
     {
         Dance = !Dance;
+    }
+
+    public void OnExplode(InputAction.CallbackContext context)
+    {
+        Explode = context.ReadValueAsButton();
     }
 }

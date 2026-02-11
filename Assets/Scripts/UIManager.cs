@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -16,6 +18,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private string _msgLoad = "El joc s'ha carregat";
     [SerializeField] private string _msgEquip = "S'ha canviat l'estat del objecte equipat";
     #endregion
+
+    [Header("Player Explosion Settings")]
+    [SerializeField] private GameObject _playerExplosionScreen;
+    [SerializeField] private TextMeshProUGUI _respawnTimeText;
+    [SerializeField] private float _respawnTime = 5f;
 
     public string PlayerInteractionText
     {
@@ -88,4 +95,23 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.SetCursorState(false);
     }
     #endregion
+
+    public void PlayerExplosion()
+    {
+        _playerExplosionScreen.SetActive(true);
+
+        StartCoroutine(StartRespawnTime());
+    }
+
+    private IEnumerator StartRespawnTime()
+    {
+        for (float timer = _respawnTime; timer > 0; timer -= Time.deltaTime)
+        {
+            _respawnTimeText.text = Mathf.Ceil(timer).ToString();
+            yield return null;
+        }
+
+        _playerExplosionScreen.SetActive(false);
+        ScenesManager.Instance.ReloadScene();
+    }
 }

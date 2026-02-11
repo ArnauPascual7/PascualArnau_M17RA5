@@ -42,4 +42,11 @@ public class ScenesManager : MonoBehaviour
             Debug.LogError("Error Comparing Scenes! Current Scene: " + SceneManager.GetActiveScene().name);
         }
     }
+
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        GameManager.Instance.EnableVisualPlayer();
+    }
 }

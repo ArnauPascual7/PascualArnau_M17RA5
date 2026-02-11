@@ -20,6 +20,11 @@ public class PlayerInventory : MonoBehaviour
         _rifle.SetActive(state);
     }
 
+    public void SetOnlyPartyHatGameObjectState(bool state)
+    {
+        _partyHat.SetActive(state);
+    }
+
     public void SetOnlyRifleGameObjectState(bool state)
     {
         _rifle.SetActive(state);
