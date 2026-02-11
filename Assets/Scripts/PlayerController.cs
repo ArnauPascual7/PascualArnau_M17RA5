@@ -1,7 +1,8 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using Unity.Cinemachine;
+using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.Animations.Rigging;
 
 [RequireComponent(typeof(PlayerInputs), typeof(CharacterController), typeof(PlayerState))]
@@ -17,6 +18,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private MultiAimConstraint[] _multiAimConstraints;
     [SerializeField] private Transform _rifleAimTarget;
     [SerializeField] private TwoBoneIKConstraint _leftHandIKConstrain;
+    [SerializeField] private GameObject _muzzleFlash;
+    [SerializeField] private GameObject _rifleImpactEffect;
 
     [Header("Movement Settings")]
     [SerializeField] private float _moveSpeed = 4f;
@@ -53,6 +56,8 @@ public class PlayerController : MonoBehaviour
     private bool _isGrounded;
     private float _stepOffset;
     private Vector3 _groundShperePos;
+
+    private Stack<GameObject> ImpactsStack = new Stack<GameObject>();
 
     private void Awake()
     {
@@ -100,6 +105,7 @@ public class PlayerController : MonoBehaviour
             {
                 Aim();
                 RifleLook();
+                Fire();
             }
         }
     }
@@ -300,6 +306,67 @@ public class PlayerController : MonoBehaviour
         else
         {
             ResetAimConstraintsWeights();
+        }
+    }
+
+    private void Fire()
+    {
+        if (_playerState.CurrentPlayerAimState == PlayerAimState.Fireing)
+        {
+            _muzzleFlash.SetActive(true);
+
+            Vector2 screenCentre = new Vector2(Screen.width / 2f, Screen.height / 2f);
+            Ray ray = Camera.main.ScreenPointToRay(screenCentre);
+
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, 100f))
+            {
+                if (hitInfo.collider != null)
+                {
+                    if (ImpactsStack.Count == 0)
+                    {
+                        StartCoroutine(InstantiateImpact(hitInfo));
+                    }
+                    else
+                    {
+                        StartCoroutine(PopImpact(hitInfo));
+                    }
+                }
+            }
+        }
+        else
+        {
+            _muzzleFlash.SetActive(false);
+        }
+    }
+
+    private IEnumerator InstantiateImpact(RaycastHit hitInfo)
+    {
+        GameObject go = Instantiate(_rifleImpactEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+        
+        float effectDuration = _rifleImpactEffect.GetComponent<ParticleSystem>().main.duration;
+        yield return new WaitForSeconds(effectDuration);
+
+        go.SetActive(false);
+        ImpactsStack.Push(go);
+    }
+
+    private IEnumerator PopImpact(RaycastHit hitInfo)
+    {
+        GameObject go = ImpactsStack.Pop();
+
+        if (go == null) yield break;
+
+        go.transform.SetPositionAndRotation(hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+
+        go.SetActive(true);
+
+        float effectDuration = go.GetComponent<ParticleSystem>().main.duration;
+        yield return new WaitForSeconds(effectDuration);
+
+        if (go != null)
+        {
+            go.SetActive(false);
+            ImpactsStack.Push(go);
         }
     }
 
