@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private string _playerTag = "Player";
 
     private PlayerInputs _playerInputs;
-    private PlayerController _playerController;
+    private PrevPlayerController _playerController;
     private PlayerInventory _playerInventory;
 
     private void Awake()
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
         if (Player != null)
         {
             _playerInputs = Player.GetComponent<PlayerInputs>();
-            _playerController = Player.GetComponent<PlayerController>();
+            _playerController = Player.GetComponent<PrevPlayerController>();
             _playerInventory = Player.GetComponent<PlayerInventory>();
         }
         else
