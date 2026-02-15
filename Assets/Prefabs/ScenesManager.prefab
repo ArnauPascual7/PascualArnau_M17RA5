@@ -47,4 +47,4 @@ MonoBehaviour:
   _mainSceneName: MainScene
   _lampSceneName: LampScene
   _sceneLoaderName: Portal
-  _exitIndex: 0
+  _exitIndex: 2
