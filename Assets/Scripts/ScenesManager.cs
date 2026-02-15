@@ -1,20 +1,58 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using System;
 using System.Collections;
+using TMPro;
+using UnityEngine;
 
-public class ScenesManager : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
-    public static ScenesManager Instance { get; private set; }
+    public static UIManager Instance { get; private set; }
 
-    [Header("Scene Names")]
-    [SerializeField] private string _mainSceneName = "MainScene";
-    [SerializeField] private string _lampSceneName = "LampScene";
+    [SerializeField] private TextMeshProUGUI _pInteractionText;
 
-    [Header("Scene Loader Settings")]
-    [SerializeField] private string _sceneLoaderName = "Portal";
-    [SerializeField] private int _exitIndex = 2;
+    #region Save NPC Menu Settings
+    [Header("Save NPC Menu UI Elements")]
+    [SerializeField] private GameObject _menuSaveNPC;
+    [SerializeField] private TextMeshProUGUI _menuStateText;
 
-    private bool _isLoadingScene = false;
+    [Header("Save NPC Text Messages")]
+    [SerializeField] private string _msgSave = "El joc s'ha guardat";
+    [SerializeField] private string _msgLoad = "El joc s'ha carregat";
+    [SerializeField] private string _msgEquip = "S'ha canviat l'estat del objecte equipat";
+    #endregion
+
+    [Header("Player Explosion Settings")]
+    [SerializeField] private GameObject _playerExplosionScreen;
+    [SerializeField] private TextMeshProUGUI _respawnTimeText;
+    [SerializeField] private float _respawnTime = 5f;
+
+    public string PlayerInteractionText
+    {
+        get { return _pInteractionText.text; }
+        set
+        {
+            _pInteractionText.text = value;
+        }
+    }
+
+    #region Save NPC Menu UI Elements Properties
+    public bool MenuSaveNPC
+    {
+        get { return _menuSaveNPC.activeSelf; }
+        set
+        {
+            _menuSaveNPC.SetActive(value);
+        }
+    }
+
+    public string MenuSaveNPCStateText
+    {
+        get { return _menuStateText.text; }
+        set
+        {
+            _menuStateText.text = value;
+        }
+    }
+    #endregion
 
     private void Awake()
     {
@@ -30,108 +68,51 @@ public class ScenesManager : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    #region Save NPC Menu Button Methods
+    public void SaveGame()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        _menuStateText.text = _msgSave;
+        SaveSystem.Save();
     }
 
-    private void OnDisable()
+    public void LoadGame()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        _menuStateText.text = _msgLoad;
+        SaveSystem.Load();
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    public void EquipDesequipObj()
     {
-        if (_isLoadingScene)
+        _menuStateText.text = _msgEquip;
+        GameManager.Instance.FlipPlayerPartyHatState();
+    }
+
+    public void ExitInteraction()
+    {
+        _menuStateText.text = string.Empty;
+        MenuSaveNPC = false;
+
+        GameManager.Instance.SetPlayerInputsState(true);
+        GameManager.Instance.SetCursorState(false);
+    }
+    #endregion
+
+    public void PlayerExplosion()
+    {
+        _playerExplosionScreen.SetActive(true);
+
+        StartCoroutine(StartRespawnTime());
+    }
+
+    private IEnumerator StartRespawnTime()
+    {
+        for (float timer = _respawnTime; timer > 0; timer -= Time.deltaTime)
         {
-            _isLoadingScene = false;
-            StartCoroutine(PositionPlayerAfterLoad());
-        }
-    }
-
-    private IEnumerator PositionPlayerAfterLoad()
-    {
-        yield return null;
-
-        GameObject loader = GameObject.Find(_sceneLoaderName);
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-
-        if (loader != null && player != null)
-        {
-            CharacterController cc = player.GetComponent<CharacterController>();
-
-            if (cc != null)
-            {
-                cc.enabled = false;
-            }
-
-            PlayerController playerController = player.GetComponent<PlayerController>();
-            if (playerController != null)
-            {
-                playerController.enabled = false;
-            }
-
-            Transform exitPoint = null;
-            if (_exitIndex >= 0 && _exitIndex < loader.transform.childCount)
-            {
-                exitPoint = loader.transform.GetChild(_exitIndex);
-            }
-
-            if (exitPoint != null)
-            {
-                player.transform.position = exitPoint.position;
-                player.transform.rotation = exitPoint.rotation;
-            }
-            else
-            {
-                Debug.LogWarning($"No s'ha pogut trobar el fill {_exitIndex} del loader. Total fills: {loader.transform.childCount}");
-            }
-
+            _respawnTimeText.text = Mathf.Ceil(timer).ToString();
             yield return null;
-            yield return null;
-
-            if (cc != null)
-            {
-                cc.enabled = true;
-            }
-
-            if (playerController != null)
-            {
-                playerController.enabled = true;
-            }
         }
-        else
-        {
-            if (loader == null) Debug.LogWarning($"No s'ha trobat el loader: {_sceneLoaderName}");
-            if (player == null) Debug.LogWarning("No s'ha trobat el player amb tag 'Player'");
-        }
-    }
 
-    public void SwitchScene()
-    {
-        if (_isLoadingScene) return;
-
-        _isLoadingScene = true;
-
-        if (SceneManager.GetActiveScene().name == _mainSceneName)
-        {
-            SceneManager.LoadScene(_lampSceneName);
-        }
-        else if (SceneManager.GetActiveScene().name == _lampSceneName)
-        {
-            SceneManager.LoadScene(_mainSceneName);
-        }
-        else
-        {
-            _isLoadingScene = false;
-            Debug.LogError("Error Comparing Scenes! Current Scene: " + SceneManager.GetActiveScene().name);
-        }
-    }
-
-    public void ReloadScene()
-    {
-        _isLoadingScene = true;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        GameManager.Instance.EnableVisualPlayer();
+        _playerExplosionScreen.SetActive(false);
+        ScenesManager.Instance.ReloadScene();
     }
 }
